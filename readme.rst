@@ -1,70 +1,42 @@
 ###################
-What is CodeIgniter
+CONTROL DE TEMPERATURA Y HUMEDAD CON NODEMCU Y DTH11
 ###################
 
-CodeIgniter is an Application Development Framework - a toolkit - for people
-who build web sites using PHP. Its goal is to enable you to develop projects
-much faster than you could if you were writing code from scratch, by providing
-a rich set of libraries for commonly needed tasks, as well as a simple
-interface and logical structure to access these libraries. CodeIgniter lets
-you creatively focus on your project by minimizing the amount of code needed
-for a given task.
 
-*******************
-Release Information
-*******************
+Este es un proyecto sencillo donde utilizamos el Nodemcu y sensores de temperatura y humedad DTH11
+para obtener la temperatura y humendad de una habitación .
 
-This repo contains in-development code for future releases. To download the
-latest stable release please visit the `CodeIgniter Downloads
-<https://codeigniter.com/download>`_ page.
+Los datos obtenidos por los sensor son enviados a una base de datos para luego ser mostrados en una
+página web sencilla realizada con el framework Codeigniter
 
-**************************
-Changelog and New Features
-**************************
 
-You can find a list of all changes for each release in the `user
-guide change log <https://github.com/bcit-ci/CodeIgniter/blob/develop/user_guide_src/source/changelog.rst>`_.
+Si desea utilizar este codigo solo debes seguir los siguientes pasos:
 
-*******************
-Server Requirements
-*******************
+1. Descargar Repositorio
+2. Copiar el codigo del archivo "code_for_nodemcu.txt" en el Nodemcu que estas programando
+3. Definir el nombre de la red y contraseña Wifi de la cual se conectara el nodemcu. De igual
+   manera se debe definir el host o dominio al cual el nodemcu enviara los datos recolectados por 
+   los sensores.
 
-PHP version 5.6 or newer is recommended.
+    #   const char* ssid     = "name_ssid";
+    #   const char* password = "password_ssid";
 
-It should work on 5.3.7 as well, but we strongly advise you NOT to run
-such old versions of PHP, because of potential security and performance
-issues, as well as missing features.
+    #   String url = "YourDomain/entrada_datos.php";
+  
+    #   client.println("Host: YourDomain");
 
-************
-Installation
-************
+4. En la carpeta application/config deberas definir la base url
 
-Please see the `installation section <https://codeigniter.com/user_guide/installation/index.html>`_
-of the CodeIgniter User Guide.
+    #   $config['base_url'] = 'Here your host o domain/';
 
-*******
-License
-*******
+5.En la raiz de este proyecto se encuentra un archivo llamado "entrada_datos.php" este archivo es el
+  encargado de enviar los datos recibidos de los sensores por metodo POST a la base de Datos; en este archivo
+  deberas configurar el usuario, contraseña y nombre de base de datos
 
-Please see the `license
-agreement <https://github.com/bcit-ci/CodeIgniter/blob/develop/user_guide_src/source/license.rst>`_.
+    #	$con=mysqli_connect("localhost","user_mysql","your_password","name_db");
 
-*********
-Resources
-*********
+6. Importar la base de datos que se encuentra en la raiz nombrado "db_proyecto"
 
--  `User Guide <https://codeigniter.com/docs>`_
--  `Language File Translations <https://github.com/bcit-ci/codeigniter3-translations>`_
--  `Community Forums <http://forum.codeigniter.com/>`_
--  `Community Wiki <https://github.com/bcit-ci/CodeIgniter/wiki>`_
--  `Community Slack Channel <https://codeigniterchat.slack.com>`_
+Realizando todos estos pasos no debe de haber ningun problema para que el proyecto se visualize. Desde este punto eres libre de modificar y agregar caracteristicas que desees 
+Este proyecto puedes encontrarlo en funcionamiento en la siguiente url : embebidos.jguerra.org 
 
-Report security issues to our `Security Panel <mailto:security@codeigniter.com>`_
-or via our `page on HackerOne <https://hackerone.com/codeigniter>`_, thank you.
-
-***************
-Acknowledgement
-***************
-
-The CodeIgniter team would like to thank EllisLab, all the
-contributors to the CodeIgniter project and you, the CodeIgniter user.
