@@ -1,0 +1,135 @@
+//import libraries
+#include <ESP8266WiFi.h>
+#include <DHT11.h>
+
+int pin=2;
+int pin2= 14;
+DHT11 sensor1(pin);
+DHT11 sensor2(pin2);
+
+const char* ssid     = "name_ssid";
+const char* password = "password_ssid";
+
+const char* host ="your host or domain";
+
+
+
+void setup() {
+  Serial.begin(115200);
+  delay(10);
+
+
+  // Nos conectamos a nuestro wifi
+  Serial.println();
+  Serial.println();
+  Serial.println("Connectando");
+  Serial.println(ssid);
+
+  WiFi.begin(ssid,password);
+ while (WiFi.status() != WL_CONNECTED){
+    delay (500);
+    Serial.print("."); 
+ }
+
+
+   Serial.println("");
+   Serial.println("Wifi Conectado");
+   Serial.println("Direccion Ip: ");
+   Serial.println(WiFi.localIP());
+ 
+}
+
+
+int value = 0;
+
+void loop() {
+  
+  delay(2000);
+  ++value;
+
+
+  int err;
+       float temp, hum, temp2, hum2;
+       if((err = sensor1.read(hum, temp)) == 0 && (err = sensor2.read(hum2, temp2)) == 0)    // Si devuelve 0 es que ha leido bien
+          {
+             Serial.print("Temperatura: ");
+             Serial.print(temp);
+             Serial.print(" Humedad: ");
+             Serial.print(hum);
+             Serial.println();
+             Serial.print("Temperatura2: ");
+             Serial.print(temp2);
+             Serial.print(" Humedad2: ");
+             Serial.print(hum2);
+             Serial.println();
+          }
+       else
+          {
+             Serial.println();
+             Serial.print("Error Num :");
+             Serial.print(err);
+             Serial.println();
+          }
+          
+
+  Serial.println("Conectando");
+  Serial.println(host);
+
+
+  // creamos la instancia de wifi cliente
+
+  WiFiClient client;
+  const int httpPort = 80;
+  if(!client.connect(host,httpPort)){
+    Serial.println("Conexion fallida");  
+    return;
+  }
+
+
+  //Creamos la direccion para luego usarla
+  String url = "YourDomain/entrada_datos.php";
+  String prueba = "/entrada_datos.php?";
+  String humedad= "humedad=";
+  String temperatura= "&temp=";
+  String humedad2= "&humedad2=";
+  String temperatura2= "&temp2=";
+  String data =humedad+hum+temperatura+temp+humedad2+hum2+temperatura2+temp2;
+
+
+  
+  //imprimo la url a donde enviaremos la solicitud, solo para debug
+  Serial.print("Url: ");
+  Serial. println(url);
+
+  // Solicitud de tipo post para enviar al servidor
+  client.println("POST /entrada_datos.php HTTP/1.1");
+  client.println("Host: YourDomain");
+  client.println("Cache-Control: no-cache");
+  client.println("Content-Type: application/x-www-form-urlencoded");
+  client.print("Content-Length: ");
+  client.println(data.length());
+  client.println();
+  client.println(data);
+  //client.println(data);
+
+  long interval = 2000;
+  unsigned long currentMillis = millis(), previousMillis = millis();
+
+
+   // leemos todas las lineas que nos responde el servidor y las imprimimos por pantalla
+
+   Serial.println("Respuesta: ");
+   while(client.available()){
+      String line = client.readStringUntil('\r');
+      Serial.print(line);
+   }
+
+
+   Serial.println();
+
+   // cierro la conexion
+
+  Serial.println("Conexion cerrada");
+   
+
+}

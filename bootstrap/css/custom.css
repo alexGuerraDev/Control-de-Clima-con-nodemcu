@@ -1,0 +1,44 @@
+body{
+    font-family: 'Abel', sans-serif !important;
+}
+.custom{
+
+    -webkit-box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 3px 0px rgba(0,0,0,0.75);
+    background-color: #353537;
+    color:white;
+    text-align:center;
+
+}
+
+.temperature , .humidity, .date{
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #353537;
+    color: #FFFFFF;
+    margin-bottom: 0 !important;
+
+}
+
+.date{
+    margin-top: 0px;
+}
+
+.date p{
+    text-align: center;
+    font-size: 15px;
+}
+
+.temperature p, .humidity p{
+    font-size: 40px;
+    text-align: center;
+}
+
+
+.statistics{
+    min-width: 200px;
+    max-width: 800px;
+    height: 400px;
+    margin: 0 auto
+}
